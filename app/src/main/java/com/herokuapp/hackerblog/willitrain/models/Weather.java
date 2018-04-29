@@ -4,11 +4,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 /**
  * Created by jason on 4/28/18.
  */
 
-public class CurrentWeather {
+public class Weather {
     public String getLocationName() {
         return locationName;
     }
@@ -20,12 +22,25 @@ public class CurrentWeather {
     }
 
     String weatherStatus;
-    public CurrentWeather(JSONObject jsonObject) throws JSONException {
+    public Weather(JSONObject jsonObject) throws JSONException {
         this.locationName = jsonObject.getString("name");
         JSONArray weatherArray = jsonObject.getJSONArray("weather");
         JSONObject weatherObj = weatherArray.getJSONObject(0);
 
         this.weatherStatus = weatherObj.getString("main");
 
+    }
+
+    public static ArrayList<Weather> fromJSONArray(JSONArray array) {
+        ArrayList<Weather> results = new ArrayList<>();
+
+        for (int x = 0; x < array.length(); x++) {
+            try {
+                results.add(new Weather(array.getJSONObject(x)));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return results;
     }
 }

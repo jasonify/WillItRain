@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.TextView;
 
-import com.herokuapp.hackerblog.willitrain.models.CurrentWeather;
+import com.herokuapp.hackerblog.willitrain.models.Weather;
 
 import org.json.JSONObject;
 
@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
                     reader.close();
 
                     data = new JSONObject(json.toString());
-                    CurrentWeather currentWeather = new CurrentWeather(data);
+                    Weather currentWeather = new Weather(data);
 
 
                     if(data.getInt("cod") != 200) {
