@@ -19,6 +19,9 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     JSONObject data = null;
+    Weather weatherNow;
+    Weather upcomingWeatherMatches;
+
     TextView currentWeatherTV;
     TextView upcomingWeatherTV;
     @Override
@@ -30,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
         upcomingWeatherTV = (TextView) findViewById(R.id.upcomingWeather);
 
         getJSON("Denver");
-        getPrediction("Denver");
 
     }
 
@@ -66,13 +68,42 @@ public class MainActivity extends AppCompatActivity {
                     JSONObject data2 = new JSONObject(json.toString());
 
                     ArrayList<Weather> list = Weather.fromJSONArray(data2.getJSONArray("list"));
+                    System.out.println("---------------------");
+                    // TODO: indexOf(""):
+
+                    String weatherNowStr =  weatherNow.getWeatherStatus().toLowerCase();
+                    Boolean isRainining = weatherNowStr.indexOf("rain") >= 0;
+
                     for (int x = 0; x < list.size(); x++) {
                         Weather w = list.get(x);
-                        upcomingWeatherTV.setText(w.getWeatherStatus());
+                        System.out.println(w.getWeatherStatus());
+                        String compareWeather = w.getWeatherStatus().toLowerCase();
+
+                        Boolean isRainingCurrent = compareWeather.indexOf("rain") >= 0;
+
+
+                        // Exit if rain
+                        if (isRainining != isRainingCurrent) {
+                                upcomingWeatherMatches = w;
+                                System.out.println(x);
+                                x = list.size() + 1;
+
+                            runOnUiThread(new Runnable() {
+
+                                @Override
+                                public void run() {
+                                    upcomingWeatherTV.setText(upcomingWeatherMatches.getWeatherStatus());
+
+                                    // Stuff that updates the UI
+
+                                }
+                            });
+
+                        }
+
                     }
 
-
-                        if(data2.getInt("cod") != 200) {
+                    if(data2.getInt("cod") != 200) {
                         System.out.println("===========Error...");
                         return null;
                     }
@@ -127,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
 
                     data = new JSONObject(json.toString());
                     Weather currentWeather = new Weather(data);
-
+                    weatherNow = currentWeather;
 
                     if(data.getInt("cod") != 200) {
                         System.out.println("===========Error...");
@@ -135,10 +166,22 @@ public class MainActivity extends AppCompatActivity {
                     }
                     System.out.println("-------------------");
                     System.out.println(currentWeather.getWeatherStatus());
-                    currentWeatherTV.setText(currentWeather.getWeatherStatus());
+
+                    runOnUiThread(new Runnable() {
+
+                        @Override
+                        public void run() {
+//                            upcomingWeatherTV.setText(upcomingWeatherMatches.getWeatherStatus());
+                            currentWeatherTV.setText(weatherNow.getWeatherStatus());
+
+                            // Stuff that updates the UI
+
+                        }
+                    });
 
 
 
+                    getPrediction("Denver");
 
                 } catch (Exception e) {
                     System.out.println("Exception !!!!!!");
