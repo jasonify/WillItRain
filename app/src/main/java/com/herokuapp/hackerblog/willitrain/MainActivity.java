@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.herokuapp.hackerblog.willitrain.models.CurrentWeather;
+
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -39,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
             protected Void doInBackground(Void... params) {
                 try {
                     URL url = new URL("http://api.openweathermap.org/data/2.5/weather?q="+city+"&APPID=222aa7d3131cb8f944331a250feeb578");
-
+                    System.out.println(url.toString());
                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
                     BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
@@ -53,17 +55,19 @@ public class MainActivity extends AppCompatActivity {
                     reader.close();
 
                     data = new JSONObject(json.toString());
+                    CurrentWeather currentWeather = new CurrentWeather(data);
+
 
                     if(data.getInt("cod") != 200) {
-                        System.out.println("Error...");
+                        System.out.println("===========Error...");
                         return null;
                     }
                     System.out.println("-------------------");
-                    System.out.println(data.getInt("cod"));
+                    System.out.println(currentWeather.getWeatherStatus());
 
 
                 } catch (Exception e) {
-
+                    System.out.println("Exception !!!!!!");
                     System.out.println("Exception "+ e.getMessage());
                     return null;
                 }

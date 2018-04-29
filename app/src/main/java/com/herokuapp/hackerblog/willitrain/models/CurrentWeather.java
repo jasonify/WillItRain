@@ -1,5 +1,6 @@
 package com.herokuapp.hackerblog.willitrain.models;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -8,9 +9,23 @@ import org.json.JSONObject;
  */
 
 public class CurrentWeather {
+    public String getLocationName() {
+        return locationName;
+    }
+
     String locationName;
+
+    public String getWeatherStatus() {
+        return weatherStatus;
+    }
+
+    String weatherStatus;
     public CurrentWeather(JSONObject jsonObject) throws JSONException {
         this.locationName = jsonObject.getString("name");
-        JSONObject weatherObj = jsonObject.getJSONObject("weather");
+        JSONArray weatherArray = jsonObject.getJSONArray("weather");
+        JSONObject weatherObj = weatherArray.getJSONObject(0);
+
+        this.weatherStatus = weatherObj.getString("main");
+
     }
 }
