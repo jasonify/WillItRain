@@ -1,8 +1,8 @@
 package com.herokuapp.hackerblog.willitrain;
 
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -18,11 +18,16 @@ import java.net.URL;
 public class MainActivity extends AppCompatActivity {
 
     JSONObject data = null;
-    TextView currentWeather;
+    TextView currentWeatherTV;
+    TextView upcomingWeatherTV;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        currentWeatherTV = (TextView) findViewById(R.id.currentWeather);
+        upcomingWeatherTV = (TextView) findViewById(R.id.upcomingWeather);
+
         getJSON("Denver");
     }
 
@@ -65,6 +70,9 @@ public class MainActivity extends AppCompatActivity {
                     }
                     System.out.println("-------------------");
                     System.out.println(currentWeather.getWeatherStatus());
+                    currentWeatherTV.setText(currentWeather.getWeatherStatus());
+
+
 
 
                 } catch (Exception e) {
