@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.herokuapp.hackerblog.willitrain.models.CurrentWeather;
 
@@ -17,7 +18,7 @@ import java.net.URL;
 public class MainActivity extends AppCompatActivity {
 
     JSONObject data = null;
-
+    TextView currentWeather;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,7 +81,6 @@ public class MainActivity extends AppCompatActivity {
                 if(data != null){
                     Log.d("Weather", data.toString());
                 }
-
             }
         }.execute();
 
