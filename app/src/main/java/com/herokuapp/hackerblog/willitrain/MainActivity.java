@@ -92,7 +92,8 @@ public class MainActivity extends AppCompatActivity {
 
                                 @Override
                                 public void run() {
-                                    upcomingWeatherTV.setText(upcomingWeatherMatches.getWeatherStatus());
+
+                                    upcomingWeatherTV.setText(upcomingWeatherMatches.getWeatherStatus() + " @" + upcomingWeatherMatches.getDateStr());
 
                                     // Stuff that updates the UI
 

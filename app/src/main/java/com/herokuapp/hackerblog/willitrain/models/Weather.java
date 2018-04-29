@@ -22,12 +22,35 @@ public class Weather {
     }
 
     String weatherStatus;
-    public Weather(JSONObject jsonObject) throws JSONException {
-//        this.locationName = jsonObject.getString("name");
-        JSONArray weatherArray = jsonObject.getJSONArray("weather");
-        JSONObject weatherObj = weatherArray.getJSONObject(0);
 
-        this.weatherStatus = weatherObj.getString("main");
+    public String getDateStr() {
+        return dateStr;
+    }
+
+    String dateStr;
+    public Weather(JSONObject jsonObject)  {
+//        this.locationName = jsonObject.getString("name");
+
+        try {
+            JSONArray weatherArray = jsonObject.getJSONArray("weather");
+            JSONObject weatherObj = weatherArray.getJSONObject(0);
+
+            try {
+                dateStr = jsonObject.getString("dt_txt");
+
+            } catch (JSONException e) {
+                // e.printStackTrace();
+                System.out.println("--- no dt_txt");
+            }
+
+            this.weatherStatus = weatherObj.getString("main");
+        } catch (JSONException e) {
+            e.printStackTrace();
+
+
+
+        }
+
 
     }
 
