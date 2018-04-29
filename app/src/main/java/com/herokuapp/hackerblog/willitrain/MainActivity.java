@@ -66,9 +66,13 @@ public class MainActivity extends AppCompatActivity {
                     JSONObject data2 = new JSONObject(json.toString());
 
                     ArrayList<Weather> list = Weather.fromJSONArray(data2.getJSONArray("list"));
+                    for (int x = 0; x < list.size(); x++) {
+                        Weather w = list.get(x);
+                        upcomingWeatherTV.setText(w.getWeatherStatus());
+                    }
 
 
-                    if(data2.getInt("cod") != 200) {
+                        if(data2.getInt("cod") != 200) {
                         System.out.println("===========Error...");
                         return null;
                     }

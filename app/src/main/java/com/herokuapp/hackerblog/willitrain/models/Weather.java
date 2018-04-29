@@ -11,11 +11,11 @@ import java.util.ArrayList;
  */
 
 public class Weather {
-    public String getLocationName() {
-        return locationName;
-    }
+//    public String getLocationName() {
+//        return locationName;
+//    }
 
-    String locationName;
+//    String locationName;
 
     public String getWeatherStatus() {
         return weatherStatus;
@@ -23,7 +23,7 @@ public class Weather {
 
     String weatherStatus;
     public Weather(JSONObject jsonObject) throws JSONException {
-        this.locationName = jsonObject.getString("name");
+//        this.locationName = jsonObject.getString("name");
         JSONArray weatherArray = jsonObject.getJSONArray("weather");
         JSONObject weatherObj = weatherArray.getJSONObject(0);
 
