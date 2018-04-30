@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
                     // TODO: indexOf(""):
 
                     String weatherNowStr =  weatherNow.getWeatherStatus().toLowerCase();
-                    Boolean isRainining = weatherNowStr.indexOf("rain") >= 0;
+                    Boolean isRainining = weatherNowStr.indexOf("rain") >= 0 || weatherNowStr.indexOf("drizzle") >= 0;
 
                     for (int x = 0; x < list.size(); x++) {
                         Weather w = list.get(x);
@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
 
                         String compareWeather = w.getWeatherStatus().toLowerCase();
 
-                        Boolean isRainingCurrent = compareWeather.indexOf("rain") >= 0;
+                        Boolean isRainingCurrent = weatherNowStr.indexOf("rain") >= 0 || weatherNowStr.indexOf("drizzle") >= 0;
 
 
                         // Exit if rain
