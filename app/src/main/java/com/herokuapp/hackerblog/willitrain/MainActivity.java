@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 System.out.println("getting text");
-                getJSON("San Francisco");
+                getJSON(cityET.getText().toString());
 
                 // Code here executes on main thread after user presses button
             }
@@ -94,12 +94,14 @@ public class MainActivity extends AppCompatActivity {
                     for (int x = 0; x < list.size(); x++) {
                         Weather w = list.get(x);
                         System.out.println(w.getWeatherStatus());
+
                         String compareWeather = w.getWeatherStatus().toLowerCase();
 
                         Boolean isRainingCurrent = compareWeather.indexOf("rain") >= 0;
 
 
                         // Exit if rain
+
                         if (isRainining != isRainingCurrent) {
                                 upcomingWeatherMatches = w;
                                 System.out.println(x);
@@ -199,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-                    getPrediction("Denver");
+                    getPrediction(city);
 
                 } catch (Exception e) {
                     System.out.println("Exception !!!!!!");
