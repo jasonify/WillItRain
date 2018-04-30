@@ -21,6 +21,7 @@ import android.util.Log;
 import android.widget.TextView;
 
 import com.herokuapp.hackerblog.willitrain.models.Weather;
+//import com.herokuapp.hackerblog.willitrain.models.LocationServices;
 
 import org.json.JSONObject;
 
@@ -45,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
 
         currentWeatherTV = (TextView) findViewById(R.id.currentWeather);
         upcomingWeatherTV = (TextView) findViewById(R.id.upcomingWeather);
+        //LocationServices currentLocation = new LocationServices();
+        //LocationServices city = currentLocation;
 
         getJSON("Denver");
 
