@@ -89,7 +89,9 @@ public class MainActivity extends AppCompatActivity {
                     // TODO: indexOf(""):
 
                     String weatherNowStr =  weatherNow.getWeatherStatus().toLowerCase();
-                    Boolean isRainining = weatherNowStr.indexOf("rain") >= 0 || weatherNowStr.indexOf("drizzle") >= 0;
+                    Boolean isRainining = weatherNowStr.indexOf("rain") >= 0;
+
+                    Boolean noChange = true;
 
                     for (int x = 0; x < list.size(); x++) {
                         Weather w = list.get(x);
@@ -97,16 +99,16 @@ public class MainActivity extends AppCompatActivity {
 
                         String compareWeather = w.getWeatherStatus().toLowerCase();
 
-                        Boolean isRainingCurrent = weatherNowStr.indexOf("rain") >= 0 || weatherNowStr.indexOf("drizzle") >= 0;
+                        Boolean isRainingCurrent = compareWeather.indexOf("rain") >= 0;
 
 
                         // Exit if rain
 
                         if (isRainining != isRainingCurrent) {
-                                upcomingWeatherMatches = w;
-                                System.out.println(x);
-                                x = list.size() + 1;
-
+                            upcomingWeatherMatches = w;
+                            System.out.println(x);
+                            x = list.size() + 1;
+                            noChange = false;
                             runOnUiThread(new Runnable() {
 
                                 @Override
@@ -121,6 +123,12 @@ public class MainActivity extends AppCompatActivity {
 
                         }
 
+
+
+                    }
+
+                    if (noChange) {
+                        upcomingWeatherTV.setText("There's no change in the foreseeable future");
                     }
 
                     if(data2.getInt("cod") != 200) {
