@@ -4,6 +4,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.herokuapp.hackerblog.willitrain.models.Weather;
@@ -33,7 +36,21 @@ public class MainActivity extends AppCompatActivity {
         upcomingWeatherTV = (TextView) findViewById(R.id.upcomingWeather);
 
         getJSON("Denver");
+        setUpButton();
 
+    }
+
+    public void setUpButton() {
+        final Button button = findViewById(R.id.goBtn);
+        final EditText cityET = (EditText) findViewById(R.id.cityET);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                System.out.println("getting text");
+                getJSON("San Francisco");
+
+                // Code here executes on main thread after user presses button
+            }
+        });
     }
 
     public void getPrediction(final String city) {
