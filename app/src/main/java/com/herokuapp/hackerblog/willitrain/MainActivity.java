@@ -18,7 +18,12 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -114,8 +119,34 @@ public class MainActivity extends AppCompatActivity {
 
                                 @Override
                                 public void run() {
+                                    String upcomingWeather = null;
 
-                                    upcomingWeatherTV.setText(upcomingWeatherMatches.getWeatherStatus() + " @" + upcomingWeatherMatches.getDateStr());
+                                    if (upcomingWeatherMatches.getWeatherStatus().contains("Rain") || upcomingWeatherMatches.getWeatherStatus().contains("Drizzle")) {
+                                        upcomingWeather = "rain";
+                                        String string = upcomingWeatherMatches.getDateStr();
+                                        final String previousFormat = "yyyy-MM-dd hh:mm:ss";
+                                        final String NEW_FORMAT = "dd";
+                                        DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                                        try {
+                                            SimpleDateFormat sdf = new SimpleDateFormat(previousFormat);
+                                            Date d = sdf.parse(string);
+                                            sdf.applyPattern(NEW_FORMAT);
+                                            String newDateString = sdf.format(d);
+                                            int daysFromToday = Integer.parseInt(newDateString);
+                                            daysFromToday -= 1;
+                                            if (daysFromToday == 0) {
+                                                upcomingWeatherTV.setText("It looks like it will " + upcomingWeather + " today." + "\nGet that umbrella out!");
+                                            } else if (daysFromToday == 1) {
+                                                upcomingWeatherTV.setText("It looks like it will " + upcomingWeather + " tomorrow." + "\nYou might want to buy an umbrella.");
+                                            } else {
+                                                upcomingWeatherTV.setText("It will rain in " + daysFromToday + " days.");
+                                            }
+                                        } catch (ParseException e) {
+                                            e.printStackTrace();
+                                        }
+                                    } else {
+                                        upcomingWeatherTV.setText("No rain within the next few days.");
+                                    }
 
                                     // Stuff that updates the UI
 
@@ -156,6 +187,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @SuppressLint("StaticFieldLeak")
     public void getJSON(final String city) {
         // TODO: Fill out AsyncTask
         new AsyncTask<Void, Void, Void>() {
@@ -201,7 +233,7 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void run() {
 //                            upcomingWeatherTV.setText(upcomingWeatherMatches.getWeatherStatus());
-                            currentWeatherTV.setText(weatherNow.getWeatherStatus());
+                            currentWeatherTV.setText("Current weather condition: " + weatherNow.getWeatherStatus());
 
                             // Stuff that updates the UI
 
