@@ -1,5 +1,6 @@
 package com.herokuapp.hackerblog.willitrain;
 
+import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -53,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    @SuppressLint("StaticFieldLeak")
     public void getPrediction(final String city) {
         // TODO: Fill out AsyncTask
         new AsyncTask<Void, Void, Void>() {
@@ -89,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
                     // TODO: indexOf(""):
 
                     String weatherNowStr =  weatherNow.getWeatherStatus().toLowerCase();
-                    Boolean isRainining = weatherNowStr.indexOf("rain") >= 0;
+                    Boolean isRainining = weatherNowStr.indexOf("rain") >= 0 || weatherNowStr.indexOf("drizzle") >= 0;
 
                     Boolean noChange = true;
 
@@ -99,8 +101,7 @@ public class MainActivity extends AppCompatActivity {
 
                         String compareWeather = w.getWeatherStatus().toLowerCase();
 
-                        Boolean isRainingCurrent = compareWeather.indexOf("rain") >= 0;
-
+                        Boolean isRainingCurrent = compareWeather.indexOf("rain") >= 0 || compareWeather.indexOf("drizzle") >= 0;
 
                         // Exit if rain
 
