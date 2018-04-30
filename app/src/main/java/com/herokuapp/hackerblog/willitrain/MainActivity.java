@@ -1,12 +1,23 @@
 package com.herokuapp.hackerblog.willitrain;
 
+import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationChannelGroup;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.location.LocationManager;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.herokuapp.hackerblog.willitrain.models.Weather;
@@ -36,23 +47,10 @@ public class MainActivity extends AppCompatActivity {
         upcomingWeatherTV = (TextView) findViewById(R.id.upcomingWeather);
 
         getJSON("Denver");
-        setUpButton();
 
     }
 
-    public void setUpButton() {
-        final Button button = findViewById(R.id.goBtn);
-        final EditText cityET = (EditText) findViewById(R.id.cityET);
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                System.out.println("getting text");
-                getJSON(cityET.getText().toString());
-
-                // Code here executes on main thread after user presses button
-            }
-        });
-    }
-
+    @SuppressLint("StaticFieldLeak")
     public void getPrediction(final String city) {
         // TODO: Fill out AsyncTask
         new AsyncTask<Void, Void, Void>() {
@@ -94,14 +92,63 @@ public class MainActivity extends AppCompatActivity {
                     for (int x = 0; x < list.size(); x++) {
                         Weather w = list.get(x);
                         System.out.println(w.getWeatherStatus());
-
                         String compareWeather = w.getWeatherStatus().toLowerCase();
 
                         Boolean isRainingCurrent = compareWeather.indexOf("rain") >= 0;
 
 
-                        // Exit if rain
+//                        public void sendNotification(String message, String title, Intent intent, int not_id) {
+//                            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
+//                                    PendingIntent.FLAG_ONE_SHOT);
+//                            Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+//                            NotificationCompat.Builder notification;
+//                            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+//                                notification
+//                                        = new NotificationCompat.Builder(this)
+//                                        .setSmallIcon(R.mipmap.ic_launcher_round)
+//                                        .setStyle(new NotificationCompat.BigTextStyle().bigText("Rain, Rain go Away Come Again Some Other Day"))
+//                                        .setContentTitle("It's Raining")
+//                                        .setPriority(NotificationCompat.PRIORITY_HIGH)
+//                                        .setContentText("Better get out your umbrella")
+//                                        .setAutoCancel(true)
+//                                        .setSound(defaultSoundUri)
+//                                        .setContentIntent(pendingIntent);
+//
+//                            } else {
+//                                Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.app_icon);
+//                                notification
+//                                        = new NotificationCompat.Builder(this)
+//                                        .setContentTitle("It's Raining")
+//                                        .setSmallIcon(R.drawable.ic_launcher_background)
+//                                        .setStyle(new NotificationCompat.BigTextStyle().bigText("Rain, Rain go Away Come Again Some Other Day"))
+//                                        .setContentText("Better get out your umbrella")
+//                                        .setAutoCancel(true)
+//                                        //.setColor(Color.parseColor("#1a4994"))
+//                                        .setPriority(NotificationCompat.PRIORITY_HIGH)
+//                                        .setLargeIcon(bitmap)
+//                                        .setSound(defaultSoundUri)
+//                                        .setContentIntent(pendingIntent);
+//                            }
+//                            NotificationManager notificationManager =
+//                                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+//                            notificationManager.notify(not_id, notification.build());
+//                        }
+//
+//                        public void initChannels(Context context) {
+//                            if (Build.VERSION.SDK_INT < 26) {
+//                                return;
+//                            }
+//                            NotificationManager notificationManager =
+//                                    (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+//                            NotificationChannel channel = new NotificationChannel("default",
+//                                    "Channel name",
+//                                    NotificationManager.IMPORTANCE_DEFAULT);
+//                            channel.setDescription("Channel description");
+//                            notificationManager.createNotificationChannel(channel);
+//                        }
 
+
+                        // Exit if rain
                         if (isRainining != isRainingCurrent) {
                                 upcomingWeatherMatches = w;
                                 System.out.println(x);
@@ -122,6 +169,11 @@ public class MainActivity extends AppCompatActivity {
                         }
 
                     }
+
+                    // GET GPS DATA
+
+                    // GET CITY NAME FROM USER AND TEST AGAINST API
+                    // PARSE RAIN DATA INTO HUMAN READABLE FORMAT / DATE
 
                     if(data2.getInt("cod") != 200) {
                         System.out.println("===========Error...");
@@ -201,7 +253,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-                    getPrediction(city);
+                    getPrediction("Denver");
 
                 } catch (Exception e) {
                     System.out.println("Exception !!!!!!");
